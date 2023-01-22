@@ -1,15 +1,15 @@
-import { db } from "../src/service/firebase-config";
+import { onValue, ref, remove, set, update } from "firebase/database";
+import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { set, ref, onValue, remove, update } from "firebase/database";
-import { useState, useEffect } from "react";
+import { db } from "../src/service/firebase-config";
 
 export function App() {
-  const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState<any>("");
+  const [todos, setTodos] = useState<any>([]);
   const [isEdit, setIsEdit] = useState(false);
   const [tempUuid, setTempUuid] = useState("");
 
-  const handleTodoChange = (e) => {
+  const handleTodoChange = (e: any) => {
     setTodo(e.target.value);
   };
 
@@ -20,7 +20,7 @@ export function App() {
       const data = snapshot.val();
       if (data !== null) {
         Object.values(data).map((todo) => {
-          setTodos((oldArray) => [...oldArray, todo]);
+          setTodos((oldArray: any) => [...oldArray, todo]);
         });
       }
     });
@@ -38,7 +38,7 @@ export function App() {
   };
 
   //update
-  const handleUpdate = (todo) => {
+  const handleUpdate = (todo: any) => {
     setIsEdit(true);
     setTempUuid(todo.uuid);
     setTodo(todo.todo);
@@ -55,7 +55,7 @@ export function App() {
   };
 
   //delete
-  const handleDelete = (todo) => {
+  const handleDelete = (todo: any) => {
     remove(ref(db, `/${todo.uuid}`));
   };
 
@@ -77,7 +77,7 @@ export function App() {
       ) : (
         <button onClick={writeToDatabase}>submit</button>
       )}
-      {todos.map((todo) => (
+      {todos.map((todo: any) => (
         <>
           <h1>{todo.todo}</h1>
           <button onClick={() => handleUpdate(todo)}>update</button>
